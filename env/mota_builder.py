@@ -97,18 +97,24 @@ class MotaBuilder:
         self.events[event_id] = self.template[template_id]
 
     def add_links(self,
-                  event_ids: list[tuple | str | int]) -> None:
+                  *args: tuple | str | int) -> None:
         """
         添加事件之間連接的道路。
-        :param event_ids: 要連接的事件標號，事件之間進行全連接。
+        :param args: 要連接的事件標號，事件之間進行全連接。
         """
-        for event_a in event_ids:
+        for event_a in args:
             if event_a not in self.events_map:
                 self.events_map[event_a] = set()
-            self.events_map[event_a].update(event_ids)
+            self.events_map[event_a].update(args)
             self.events_map[event_a].remove(event_a)
 
-    def build(self) -> tuple[Player, dict, dict, dict, tuple | str | int, tuple | str | int]:
+    def build(self) -> tuple[
+            Player,
+            dict[tuple | str | int, Event],
+            dict[tuple | str | int, set],
+            dict[tuple | str | int, Event],
+            tuple | str | int,
+            tuple | str | int]:
         """
         建立環境。
         :return: 建立好魔塔環境所需資料。

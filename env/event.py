@@ -99,8 +99,8 @@ class Enemy(Event):
             self.threshold_demand = self.enemy_hp / rounds - p_damage
         self.atk_profit = e_damage  # 當主角傷害 = 0 時，攻省為無限大，但此處取怪物單回合傷害作為上限
         self.def_profit = rounds
-        self.balance = p_damage + e_damage
-        self.inc_hp = damage
+        self.balance = p_damage - e_damage
+        self.inc_hp = -damage
 
     def update_feature(self) -> None:
         self._battle()

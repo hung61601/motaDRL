@@ -45,7 +45,7 @@ class Mota(gym.Env, gym.utils.EzPickle):
         self.activated_events.clear()
         self.extend_graph(self.player_id)
 
-    def update_graph_feature(self) -> None:
+    def update_events_feature(self) -> None:
         """
         僅更新圖形中的事件，減少更新多事件造成效能下降。
         """
@@ -84,7 +84,7 @@ class Mota(gym.Env, gym.utils.EzPickle):
         """
         self.candidate_events.remove(event_id)
         for adjacent_event in self.events_map[event_id]:
-            if adjacent_event not in self.activated_events:
+            if adjacent_event not in self.activated_events and adjacent_event not in self.candidate_events:
                 self.candidate_events.append(adjacent_event)
 
     def get_feature(self) -> dict:
@@ -119,16 +119,16 @@ class Mota(gym.Env, gym.utils.EzPickle):
         reward = self.player.player_hp - self.score
         self.score = self.player.player_hp
         # 判斷是否結束
-        done = (selected_event == self.end_id or self.player.player_hp <= 0)
+        done = (selected_event_id == self.end_id or self.player.player_hp <= 0)
         # 更新特徵
-        self.update_graph_feature()
+        self.update_events_feature()
         return self.get_feature(), reward, done, False, self.get_info()
 
     def reset(self,
               player: Player = None,
-              events: dict = None,
-              events_map: dict = None,
-              events_template: dict = None,
+              events: dict[tuple | str | int, Event] = None,
+              events_map: dict[tuple | str | int, set] = None,
+              events_template: dict[tuple | str | int, Event] = None,
               player_id: tuple | str | int = None,
               end_id: tuple | str | int = None) -> tuple[dict, dict]:
         self.player = player
@@ -140,6 +140,6 @@ class Mota(gym.Env, gym.utils.EzPickle):
         self._reset_candidate()
         self._remove_player_event()
         self._reset_matrix()
-        self.update_graph_feature()
+        self.update_events_feature()
         self.score = self.player.player_hp
         return self.get_feature(), self.get_info()
