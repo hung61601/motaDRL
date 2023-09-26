@@ -49,6 +49,12 @@ class Event:
         self.player.yellow_key += self.yellow_key
         self.player.blue_key += self.blue_key
 
+    def can_activated(self) -> bool:
+        """
+        是否可以激活事件。
+        """
+        return True
+
     def update_feature(self) -> None:
         """
         更新事件特徵，以改變激活事件時影響的狀態。
@@ -102,6 +108,9 @@ class Enemy(Event):
         self.balance = p_damage - e_damage
         self.inc_hp = -damage
 
+    def can_activated(self):
+        return -self.inc_hp < self.player.player_hp
+
     def update_feature(self) -> None:
         self._battle()
 
@@ -123,3 +132,11 @@ class Item(Event):
         self.inc_def = inc_def
         self.yellow_key = yellow_key
         self.blue_key = blue_key
+
+    def can_activated(self):
+        if -self.yellow_key > self.player.yellow_key:
+            return False
+        elif -self.blue_key > self.player.blue_key:
+            return False
+        else:
+            return True

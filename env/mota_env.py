@@ -89,7 +89,10 @@ class Mota(gym.Env, gym.utils.EzPickle):
 
     def get_feature(self) -> dict:
         """
-        獲取圖形節點特徵和全體特徵。
+        獲取圖形特徵。
+        :returns:
+            node: 節點特徵。
+            graph: 全體特徵。
         """
         node_features = []
         for event_id in self.matrix.get_graph_node():
@@ -99,10 +102,15 @@ class Mota(gym.Env, gym.utils.EzPickle):
 
     def get_info(self) -> dict:
         """
-        獲取鄰接矩陣和候選事件索引。
+        獲取環境訊息。
+        :returns:
+            adj_matrix: 鄰接矩陣。
+            candidate: 候選事件索引。
+            mask: 不可激活的候選事件遮罩。
         """
         return {'adj_matrix': self.matrix.get_info(),
-                'candidate': self.matrix.get_indices(self.candidate_events)}
+                'candidate': self.matrix.get_indices(self.candidate_events),
+                'mask': [self.events[event_id].can_activated() for event_id in self.candidate_events]}
 
     def step(self, action: int):
         selected_event_id = self.candidate_events[action]

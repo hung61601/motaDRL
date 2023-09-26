@@ -1,5 +1,4 @@
-![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge\&logo=windows\&logoColor=white)  
-
+![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge\&logo=windows\&logoColor=white)
 [![coverage badge](./coverage.svg)](https://hung61601.github.io/motaDRL/tests/coverage/)  
 
 # Mota DRL
@@ -35,7 +34,7 @@ coverage html --skip-empty -d .\tests\coverage
 ```bash
 coverage-badge -o coverage.svg -f
 ```
-- 您若是在 Windows 作業環境下運行，可以參考 `coverage.ps1` 檔案的指令。
+- 您若是在 Windows 作業系統下運行，可以參考 `coverage.ps1` 檔案的指令。
 - 使用 PyCharm 運行測試時，請至工具列 File -> Settings -> Tools -> Python Integrated Tools ->Testing -> Default test runner，將設定切換成 pytest。
 - 測試覆蓋率報表請 [點擊此連結](https://hung61601.github.io/motaDRL/tests/coverage/)。
 

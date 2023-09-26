@@ -64,7 +64,8 @@ def test_extend_graph():
             'value': 4,
             'size': (2, 2)
         },
-        'candidate': [0]
+        'candidate': [0],
+        'mask': [True]
     }
     env.extend_graph(0)
     assert env.get_info() == {
@@ -74,7 +75,8 @@ def test_extend_graph():
             'value': 10,
             'size': (4, 4)
         },
-        'candidate': [0]
+        'candidate': [0],
+        'mask': [True]
     }
 
 
@@ -149,7 +151,8 @@ def test_get_info():
             'value': 7,
             'size': (3, 3)
         },
-        'candidate': [0, 1]
+        'candidate': [0, 1],
+        'mask': [True, True]
     }
 
 
@@ -207,7 +210,8 @@ def test_step():
             'value': 18,
             'size': (6, 6)
         },
-        'candidate': [0, 1]
+        'candidate': [0, 1],
+        'mask': [True, True]
     }
     assert reward == -8
     assert not done
@@ -229,7 +233,8 @@ def test_step():
             'value': 13,
             'size': (5, 5)
         },
-        'candidate': [0, 3, 4]
+        'candidate': [0, 3, 4],
+        'mask': [True, True, True]
     }
     assert reward == -20
     assert not done
@@ -253,7 +258,8 @@ def test_step():
             'value': 19,
             'size': (7, 7)
         },
-        'candidate': [2, 3, 0, 1]
+        'candidate': [2, 3, 0, 1],
+        'mask': [True, True, True, True]
     }
     assert reward == 0
     assert not done
@@ -276,7 +282,8 @@ def test_step():
             'value': 16,
             'size': (6, 6)
         },
-        'candidate': [1, 2, 0, 5]
+        'candidate': [1, 2, 0, 5],
+        'mask': [True, True, True, True]
     }
     assert reward == 0
     assert not done
@@ -298,7 +305,8 @@ def test_step():
             'value': 15,
             'size': (5, 5)
         },
-        'candidate': [1, 2, 0]
+        'candidate': [1, 2, 0],
+        'mask': [True, True, True]
     }
     assert reward == 0
     assert not done
@@ -320,7 +328,8 @@ def test_step():
             'value': 11,
             'size': (5, 5)
         },
-        'candidate': [0, 1, 2, 3]
+        'candidate': [0, 1, 2, 3],
+        'mask': [True, True, True, True]
     }
     assert reward == -8
     assert not done
@@ -341,7 +350,8 @@ def test_step():
             'value': 8,
             'size': (4, 4)
         },
-        'candidate': [0, 1, 2]
+        'candidate': [0, 1, 2],
+        'mask': [True, True, True]
     }
     assert reward == 0
     assert not done
@@ -361,7 +371,8 @@ def test_step():
             'value': 7,
             'size': (3, 3)
         },
-        'candidate': [0, 1]
+        'candidate': [0, 1],
+        'mask': [True, True]
     }
     assert reward == 100
     assert not done
@@ -380,7 +391,8 @@ def test_step():
             'value': 2,
             'size': (2, 2)
         },
-        'candidate': [0, 1]
+        'candidate': [0, 1],
+        'mask': [True, True]
     }
     assert reward == -56
     assert not done
@@ -396,7 +408,9 @@ def test_step():
             'value': 1,
             'size': (1, 1)
         },
-        'candidate': [0]}
+        'candidate': [0],
+        'mask': [True]
+    }
     assert reward == 100
     assert not done
     features, reward, done, _, info = env.step(env.candidate_events.index((6, 1)))
@@ -411,7 +425,8 @@ def test_step():
             'value': 0,
             'size': (0, 0)
         },
-        'candidate': []
+        'candidate': [],
+        'mask': []
     }
     assert reward == 0
     assert done
@@ -470,5 +485,6 @@ def test_reset():
                 'value': 11,
                 'size': (5, 5)
             },
-            'candidate': [0, 1]
+            'candidate': [0, 1],
+            'mask': [True, True]
         }

@@ -11,6 +11,33 @@ def test_event_subclass():
     assert issubclass(Item, Event)
 
 
+def test_event_activate():
+    player = Player(1000, 10, 10, 0, 0)
+    event = Event(player)
+    assert event.can_activated()
+
+
+def test_enemy_activate():
+    player = Player(1000, 10, 10, 0, 0)
+    enemy = Enemy(player, 50, 18, 6)
+    enemy.update_feature()
+    enemy.activate()
+    assert player.player_hp == 904
+
+
+def test_enemy_can_activated():
+    player = Player(100, 10, 10, 0, 0)
+    weak_enemy = Enemy(player, 50, 18, 6)
+    weak_enemy.update_feature()
+    assert weak_enemy.can_activated()
+    powerful_enemy = Enemy(player, 50, 80, 6)
+    powerful_enemy.update_feature()
+    assert not powerful_enemy.can_activated()
+    invincible_enemy = Enemy(player, 50, 18, 60)
+    invincible_enemy.update_feature()
+    assert not invincible_enemy.can_activated()
+
+
 def test_enemy_get_feature():
     player = Player(1000, 10, 10, 0, 0)
     enemy = Enemy(player, 50, 18, 6)
@@ -33,20 +60,38 @@ def test_enemy_update_feature():
     assert enemy.balance == -4
 
 
-def test_enemy_activate():
-    player = Player(1000, 10, 10, 0, 0)
-    enemy = Enemy(player, 50, 18, 6)
-    enemy.update_feature()
-    enemy.activate()
-    assert player.player_hp == 904
-
-
 def test_invincible_enemy_get_feature():
     player = Player(1000, 10, 10, 0, 0)
     enemy = Enemy(player, 800, 20, 20)
     enemy.update_feature()
     assert enemy.get_feature(False) == (-1000, 0, 0, 0, 0, 800, 20, 20)
     assert enemy.get_feature(True) == (-1000, 0, 0, 0, 0, 11, 10, 0, -20)
+
+
+def test_item_activate():
+    player = Player(100, 5, 5, 1, 1)
+    jewel = Item(player, 0, 2, 0, 0, 0)
+    potion = Item(player, 50, 0, 0, 0, 0)
+    key = Item(player, 0, 0, 0, 1, 0)
+    door = Item(player, 0, 0, 0, 0, -1)
+    jewel.activate()
+    potion.activate()
+    key.activate()
+    door.activate()
+    assert player.player_atk == 7
+    assert player.player_hp == 150
+    assert player.yellow_key == 2
+    assert player.blue_key == 0
+
+
+def test_item_can_activated():
+    player = Player(100, 10, 10, 1, 0)
+    yellow_door = Item(player, 0, 0, 0, -1, 0)
+    assert yellow_door.can_activated()
+    blue_door = Item(player, 0, 0, 0, 0, -1)
+    assert not blue_door.can_activated()
+    yellow_door.activate()
+    assert not yellow_door.can_activated()
 
 
 def test_item_get_feature():
