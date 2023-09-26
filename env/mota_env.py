@@ -110,7 +110,7 @@ class Mota(gym.Env, gym.utils.EzPickle):
         """
         return {'adj_matrix': self.matrix.get_info(),
                 'candidate': self.matrix.get_indices(self.candidate_events),
-                'mask': [self.events[event_id].can_activated() for event_id in self.candidate_events]}
+                'mask': [not self.events[event_id].can_activated() for event_id in self.candidate_events]}
 
     def step(self, action: int):
         selected_event_id = self.candidate_events[action]
@@ -126,11 +126,12 @@ class Mota(gym.Env, gym.utils.EzPickle):
         # 計算獎勵
         reward = self.player.player_hp - self.score
         self.score = self.player.player_hp
-        # 判斷是否結束
-        done = (selected_event_id == self.end_id or self.player.player_hp <= 0)
         # 更新特徵
         self.update_events_feature()
-        return self.get_feature(), reward, done, False, self.get_info()
+        # 判斷是否結束
+        info = self.get_info()
+        done = (selected_event_id == self.end_id) or all(info['mask'])
+        return self.get_feature(), reward, done, False, info
 
     def reset(self,
               player: Player = None,
