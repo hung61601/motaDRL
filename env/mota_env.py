@@ -130,8 +130,9 @@ class Mota(gym.Env, gym.utils.EzPickle):
         self.update_events_feature()
         # 判斷是否結束
         info = self.get_info()
-        done = (selected_event_id == self.end_id) or all(info['mask'])
-        return self.get_feature(), reward, done, False, info
+        terminated = (selected_event_id == self.end_id)
+        truncated = all(info['mask'])
+        return self.get_feature(), reward, terminated, truncated, info
 
     def reset(self,
               player: Player = None,
