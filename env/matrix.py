@@ -56,7 +56,7 @@ class MatrixCOO:
     def get_graph_node(self) -> iter:
         return self.node_links.keys()
 
-    def get_indices(self, node_ids: list[tuple | str | int]) -> list:
+    def get_indices(self, node_ids: list[tuple | str | int]) -> list[int]:
         return [self.node_map[node_id] for node_id in node_ids]
 
     def clear(self) -> None:

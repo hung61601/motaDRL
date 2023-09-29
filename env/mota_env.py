@@ -87,30 +87,26 @@ class Mota(gym.Env, gym.utils.EzPickle):
             if adjacent_event not in self.activated_events and adjacent_event not in self.candidate_events:
                 self.candidate_events.append(adjacent_event)
 
-    def get_feature(self) -> dict:
+    def get_observation(self) -> dict[str, dict | list[tuple] | list[int] | list[bool] | tuple]:
         """
-        獲取圖形特徵。
+        獲取環境當前的觀測值。
         :returns:
-            node: 節點特徵。
-            graph: 全體特徵。
-        """
-        node_features = []
-        for event_id in self.matrix.get_graph_node():
-            node_features.append(self.events[event_id].get_feature(self.use_advanced_feature))
-        return {'node': node_features,
-                'graph': self.player.get_feature()}
-
-    def get_info(self) -> dict:
-        """
-        獲取環境訊息。
-        :returns:
+            node_feature: 節點特徵。
+            graph_feature: 全體特徵。
             adj_matrix: 鄰接矩陣。
             candidate: 候選事件索引。
             mask: 不可激活的候選事件遮罩。
         """
-        return {'adj_matrix': self.matrix.get_info(),
-                'candidate': self.matrix.get_indices(self.candidate_events),
-                'mask': [not self.events[event_id].can_activated() for event_id in self.candidate_events]}
+        node_features = []
+        for event_id in self.matrix.get_graph_node():
+            node_features.append(self.events[event_id].get_feature(self.use_advanced_feature))
+        return {
+            'node_feature': node_features,
+            'graph_feature': self.player.get_feature(),
+            'adj_matrix': self.matrix.get_info(),
+            'candidate': self.matrix.get_indices(self.candidate_events),
+            'mask': [not self.events[event_id].can_activated() for event_id in self.candidate_events]
+        }
 
     def step(self, action: int):
         selected_event_id = self.candidate_events[action]
@@ -129,10 +125,10 @@ class Mota(gym.Env, gym.utils.EzPickle):
         # 更新特徵
         self.update_events_feature()
         # 判斷是否結束
-        info = self.get_info()
+        observation = self.get_observation()
         terminated = (selected_event_id == self.end_id)
-        truncated = all(info['mask'])
-        return self.get_feature(), reward, terminated, truncated, info
+        truncated = all(observation['mask'])
+        return observation, reward, terminated, truncated, None
 
     def reset(self,
               player: Player = None,
@@ -140,7 +136,7 @@ class Mota(gym.Env, gym.utils.EzPickle):
               events_map: dict[tuple | str | int, set] = None,
               events_template: dict[tuple | str | int, Event] = None,
               player_id: tuple | str | int = None,
-              end_id: tuple | str | int = None) -> tuple[dict, dict]:
+              end_id: tuple | str | int = None) -> tuple[dict, None]:
         self.player = player
         self.events = events
         self.events_map = events_map
@@ -152,4 +148,4 @@ class Mota(gym.Env, gym.utils.EzPickle):
         self._reset_matrix()
         self.update_events_feature()
         self.score = self.player.player_hp
-        return self.get_feature(), self.get_info()
+        return self.get_observation(), None
