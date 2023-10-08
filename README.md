@@ -42,7 +42,7 @@ pip install -r requirements.txt
 - 本專案使用 pytest 作為測試框架，並使用 coverage.py 收集測試覆蓋率。
 - 下列指令將運行所有測試，並生成覆蓋率數據。
 ```bash
-coverage run --omit="tests/*,run_scripts/*" -m pytest
+coverage run --omit="tests/*" -m pytest
 ```
 - 下列指令將覆蓋率數據轉換成 html 的報表。  
 您可以開啟 `./tests/coverage/index.html` 來檢視程式碼覆蓋狀況。  
