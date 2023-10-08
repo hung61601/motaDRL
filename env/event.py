@@ -3,7 +3,6 @@ from env.util import condition_clamp
 
 class Player:
     """主角類別。"""
-
     def __init__(self,
                  player_hp: int,
                  player_atk: int,
@@ -22,7 +21,6 @@ class Player:
 
 class Event:
     """所有事件的父類別。"""
-
     def __init__(self,
                  player: Player):
         self.player = player
@@ -77,7 +75,6 @@ class Event:
 
 class Enemy(Event):
     """怪物事件類別。"""
-
     def __init__(self,
                  player: Player,
                  enemy_hp,
@@ -117,7 +114,6 @@ class Enemy(Event):
 
 class Item(Event):
     """道具事件類別。"""
-
     def __init__(self,
                  player: Player,
                  inc_hp: int,

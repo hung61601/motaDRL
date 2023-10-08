@@ -1,4 +1,7 @@
-class MotaGenerator:
+from env.mota_builder import MotaBuilder
 
-    def __init__(self, mota_builder):
-        self.mota_builder = mota_builder
+
+class MotaGenerator:
+    def __init__(self):
+        self.mota_builder: MotaBuilder = MotaBuilder()
+        # TODO

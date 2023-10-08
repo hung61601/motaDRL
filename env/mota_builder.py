@@ -2,7 +2,6 @@ from env.event import Player, Event, Enemy, Item
 
 
 class MotaBuilder:
-
     def __init__(self):
         self.player: Player | None = None
         self.events: dict[tuple | str | int, Event] = {}

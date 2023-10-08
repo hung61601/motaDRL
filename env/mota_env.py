@@ -4,7 +4,7 @@ from env.event import Player, Event
 
 
 class Mota(gym.Env, gym.utils.EzPickle):
-
+    # TODO: 如果圖形中候選節點的鄰居和特徵都相同，那麼只要列出其中一個就好，因為神經網路輸出也會是相同的，要節省計算時間。
     def __init__(self,
                  graphic_depth: int = 5,
                  use_advanced_feature: bool = True):

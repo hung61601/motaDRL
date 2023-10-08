@@ -3,7 +3,6 @@ from collections import OrderedDict
 
 class MatrixCOO:
     """使用 COO 格式儲存的稀疏鄰接矩陣類別。"""
-
     def __init__(self):
         self.indices: int = 0
         self.node_map: dict = {}
